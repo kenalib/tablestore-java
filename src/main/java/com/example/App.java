@@ -24,6 +24,11 @@ public class App
         // save 10000 rows: 15 seconds
         TableStoreClient syncClient = new TableStoreSyncClient();
         run(syncClient, csv);
+
+        // initial connection: 5 seconds
+        // save 10000 rows: 3 seconds
+        TableStoreClient asyncClient = new TableStoreAsyncClient();
+        run(asyncClient, csv);
     }
 
     private static void run(TableStoreClient client, TableStoreCsv csv) {
