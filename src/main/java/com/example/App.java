@@ -22,7 +22,7 @@ public class App
         TableStoreCsvParser parser = new CrimeParser(tableName, primaryColNum);
         TableStoreCsv csv = new TableStoreCsv(resourceCsvName, parser);
 
-        TableStoreClient client = new TableStoreClient();
+        TableStoreSyncClient client = new TableStoreSyncClient();
         BatchWriteRowRequest batchWriteRowRequest = new BatchWriteRowRequest();
 
         int i = 1;

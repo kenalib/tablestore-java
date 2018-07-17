@@ -8,10 +8,10 @@ import com.alicloud.openservices.tablestore.model.BatchWriteRowResponse;
 
 import java.util.ResourceBundle;
 
-class TableStoreClient {
+class TableStoreSyncClient {
     private SyncClient client;
 
-    TableStoreClient() {
+    TableStoreSyncClient() {
         client = createClient();
     }
 
