@@ -12,8 +12,6 @@ import java.io.IOException;
 public class App
 {
     public static void main( String[] args ) throws IOException {
-        // initial connection: 10 seconds
-        // save 10000 rows: 15 seconds
         String resourceCsvName = "csv/Crimes_-_2001_to_present_10000.csv";
 
         String tableName = "ots_chicago_crime";
@@ -22,7 +20,13 @@ public class App
         TableStoreCsvParser parser = new CrimeParser(tableName, primaryColNum);
         TableStoreCsv csv = new TableStoreCsv(resourceCsvName, parser);
 
-        TableStoreSyncClient client = new TableStoreSyncClient();
+        // initial connection: 10 seconds
+        // save 10000 rows: 15 seconds
+        TableStoreClient syncClient = new TableStoreSyncClient();
+        run(syncClient, csv);
+    }
+
+    private static void run(TableStoreClient client, TableStoreCsv csv) {
         BatchWriteRowRequest batchWriteRowRequest = new BatchWriteRowRequest();
 
         int i = 1;
@@ -43,7 +47,5 @@ public class App
         if (!batchWriteRowRequest.isEmpty()) {
             client.runBatchWriteRowRequest(batchWriteRowRequest);
         }
-
-        client.shutdown();
     }
 }

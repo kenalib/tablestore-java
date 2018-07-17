@@ -1,38 +1,21 @@
 package com.example;
 
-import com.alicloud.openservices.tablestore.ClientConfiguration;
 import com.alicloud.openservices.tablestore.SyncClient;
-import com.alicloud.openservices.tablestore.model.AlwaysRetryStrategy;
 import com.alicloud.openservices.tablestore.model.BatchWriteRowRequest;
 import com.alicloud.openservices.tablestore.model.BatchWriteRowResponse;
 
-import java.util.ResourceBundle;
-
-class TableStoreSyncClient {
+class TableStoreSyncClient extends TableStoreClient {
     private SyncClient client;
 
     TableStoreSyncClient() {
-        client = createClient();
+        readAccountInfo();
+        createClientConfiguration();
+
+        client = new SyncClient(endPoint, accessKeyId, accessKeySecret, instanceName, clientConfiguration);
     }
 
     void shutdown() {
         client.shutdown();
-    }
-
-    private SyncClient createClient() {
-        ResourceBundle res = ResourceBundle.getBundle("account");
-
-        final String endPoint = res.getString("account.endPoint");
-        final String accessKeyId = res.getString("account.accessKeyId");
-        final String accessKeySecret = res.getString("account.accessKeySecret");
-        final String instanceName = res.getString("account.instanceName");
-
-        ClientConfiguration clientConfiguration = new ClientConfiguration();
-        clientConfiguration.setConnectionTimeoutInMillisecond(5000);
-        clientConfiguration.setSocketTimeoutInMillisecond(5000);
-        clientConfiguration.setRetryStrategy(new AlwaysRetryStrategy());
-
-        return new SyncClient(endPoint, accessKeyId, accessKeySecret, instanceName, clientConfiguration);
     }
 
     void runBatchWriteRowRequest(BatchWriteRowRequest batchWriteRowRequest) {
