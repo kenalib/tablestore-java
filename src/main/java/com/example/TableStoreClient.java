@@ -30,5 +30,6 @@ abstract class TableStoreClient {
     }
 
     abstract void runBatchWriteRowRequest(BatchWriteRowRequest batchWriteRowRequest);
+    abstract int getCurrentRequestCount();
     abstract void shutdown();
 }

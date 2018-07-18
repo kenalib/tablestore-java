@@ -50,12 +50,23 @@ Sample code of Table Store Java SDK
 
 ## Table Store CSV loader
 
+* setup table in Table Store console or in `otscli`
+
+```bash
+# CREATE TABLE
+ct ots_chicago_crime o_ID:integer readrt:100 writert:50
+```
+
 * put csv in `src/main/resources/csv/`
 * put column types in `src/main/resources/${table_name}.properties`
 * prepare class which implements `TableStoreCsvParser.java`
 * example is `src/main/java/com/example/CrimeParser.java`
 * run `App.java`
+* you can check the result by exporting table data
 
+```
+export ots_chicago_crime /tmp/tablecrime.txt
+```
 
 ## Reference
 

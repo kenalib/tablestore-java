@@ -4,8 +4,12 @@ import com.alicloud.openservices.tablestore.SyncClient;
 import com.alicloud.openservices.tablestore.model.BatchWriteRowRequest;
 import com.alicloud.openservices.tablestore.model.BatchWriteRowResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 class TableStoreSyncClient extends TableStoreClient {
     private SyncClient client;
+    private volatile Map<Integer, BatchWriteRowRequest> requested = new HashMap<Integer, BatchWriteRowRequest>();
 
     TableStoreSyncClient() {
         readAccountInfo();
@@ -18,12 +22,19 @@ class TableStoreSyncClient extends TableStoreClient {
         client.shutdown();
     }
 
+    int getCurrentRequestCount() {
+        return requested.size();
+    }
+
     void runBatchWriteRowRequest(BatchWriteRowRequest batchWriteRowRequest) {
         System.out.println("Running Batch: " + batchWriteRowRequest.getRowsCount());
+        requested.put(batchWriteRowRequest.hashCode(), batchWriteRowRequest);
+
         BatchWriteRowResponse response = client.batchWriteRow(batchWriteRowRequest);
 
         if (response.isAllSucceed()) {
             System.out.println("All Succeed rows: " + response.getSucceedRows().size());
+            requested.remove(batchWriteRowRequest.hashCode());
         } else {
             for (BatchWriteRowResponse.RowResult rowResult : response.getFailedRows()) {
                 System.out.println("Failed rows:" + batchWriteRowRequest.getRowChange(rowResult.getTableName(), rowResult.getIndex()).getPrimaryKey());
