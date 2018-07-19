@@ -4,6 +4,11 @@
 Sample code of Table Store Java SDK
 
 
+## Instance setup
+
+please note when setup in console, the instance type should be High-performance.
+
+
 ## Account setup
 
 * this setup is to replace id in `src/main/resources/account.properties`
