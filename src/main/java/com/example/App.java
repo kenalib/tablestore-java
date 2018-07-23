@@ -28,7 +28,8 @@ public class App
 
         // initial connection: 10 seconds
         // save 10000 rows: 5 seconds
-        TableStoreClient asyncClient = new TableStoreAsyncClient();
+        TableStoreAsyncCallback callback = new TableStoreAsyncCallback();
+        TableStoreClient asyncClient = new TableStoreAsyncClient(callback);
         run(asyncClient, csv);
     }
 
